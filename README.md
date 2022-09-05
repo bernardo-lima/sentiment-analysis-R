@@ -328,10 +328,14 @@ word_freq_table <- klm_corrected %>%
 
 ``` r
 # Plotting a wordcloud
+layout(matrix(c(1, 2), nrow=2), heights=c(1, 4))
+par(mar=rep(0, 4))
+plot.new()
+text(x=0.5, y=0.5, "Figure 5: Wordcloud for KLM's user reviews")
 word_freq_table %>% 
   filter(n>100) %>%
   with(wordcloud(word, n,
-                 scale = c(4,0.2),
+                 scale = c(5,0.2),
                  colors = brewer.pal(8, "Dark2")))
 ```
 
@@ -343,6 +347,10 @@ express negative and positive sentiments
 
 ``` r
 # Positive/Negative cloud
+layout(matrix(c(1, 2), nrow=2), heights=c(1, 4))
+par(mar=rep(0, 4))
+plot.new()
+text(x=0.5, y=0.5, "Figure 6: Wordcloud for KLM's user reviews by sentiment type")
 klm_tidy_corrected %>%
   inner_join(custom_bing) %>%
   count(word, sentiment, sort = TRUE) %>%
@@ -384,7 +392,7 @@ klm_tidy_corrected %>%
 
 <img src="README_files/figure-gfm/unnamed-chunk-9-1.png" title="Most important words contributing to positive and negative sentiment" alt="Most important words contributing to positive and negative sentiment" width="70%" />
 
-Figure 5 above lists the most important words contributing to positive
+Figure 7 above lists the most important words contributing to positive
 and negative sentiment. As I have noted earlier, there seems to be a
 structural break in the net sentiment of users’ reviews around July
 2021. The net sentiment becomes considerably more negative after July
@@ -443,8 +451,8 @@ klm_tidy %>%
 
 <img src="README_files/figure-gfm/unnamed-chunk-11-1.png" title="Most important words contributing to sentiments (date &gt; 2021-07-01)" alt="Most important words contributing to sentiments (date &gt; 2021-07-01)" width="70%" />
 
-Figure 6 plots list the top negative and positive words for user reviews
-of trips that occurred before or during July 2021, while Figure 7 plots
+Figure 8 plots list the top negative and positive words for user reviews
+of trips that occurred before or during July 2021, while Figure 9 plots
 the same information for trips that happened after July 2021.
 Contrasting these two figures it is possible to conclude that *the
 increase in the net negative sentiment of KLM user after July 2021 is
@@ -455,11 +463,16 @@ in number of refunds*.
 
 In order to assess the robustness of these conclusions and to provide
 more context to the interpretation of individual words, I created a
-wordcloud with the most common bigrams and a network graph with the most
-importnat word relationships in KLM user reviews.
+wordcloud with the most common bigrams (Figure 10) and a network graph
+with the most importnat word relationships in KLM user reviews (Figure
+11).
 
 ``` r
 # Most Common Bigrams
+layout(matrix(c(1, 2), nrow=2), heights=c(1, 4))
+par(mar=rep(0, 4))
+plot.new()
+text(x=0.5, y=0.5, "Figure 10: Most common bigrams in KLM user reviews")
 klm_corrected %>%
   unnest_tokens(bigram, review_text, token = "ngrams", n = 2) %>%
   count(bigram, sort = TRUE) %>%
@@ -495,7 +508,7 @@ bigram_graph_corrected %>% ggraph(layout = "fr") +
   geom_node_point(color = "lightblue", size = 5) +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
   theme_void() +
-  ggtitle("Figure 10: Most importnat word relationships in KLM user reviews")
+  ggtitle("Figure 11: Most importnat word relationships in KLM user reviews")
 ```
 
 ![Most importnat word relationships in KLM user
